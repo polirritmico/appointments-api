@@ -6,8 +6,10 @@
  */
 package cl.duoc.appointments.dto.request;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +21,12 @@ public class AppointmentCreationRequest {
     @NotNull(message = "La consulta debe estar asociada a un cliente")
     @Positive(message = "La id del cliente no puede ser negativa")
     private Long clientId;
+
+    @NotNull(message = "La consulta debe estar asociada a un mascota")
+    @Positive(message = "La id de la mascota no puede ser negativa")
+    private Long petId;
+
+    @NotNull(message = "La consulta debe tener fecha y hora")
+    @FutureOrPresent
+    private LocalDateTime scheduleAt;
 }
