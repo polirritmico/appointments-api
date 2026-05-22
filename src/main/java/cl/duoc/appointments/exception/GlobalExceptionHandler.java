@@ -33,7 +33,11 @@ public class GlobalExceptionHandler {
                                 (prevErr, newErr) -> prevErr + ", " + newErr)));
     }
 
-    @ExceptionHandler({ClientAppointmentNotFoundException.class, ResourceNotFoundException.class})
+    @ExceptionHandler({
+        ClientAppointmentNotFoundException.class,
+        ClinicalRecordNotFoundException.class,
+        ResourceNotFoundException.class
+    })
     public ResponseEntity<ApiErrorResponse> handleNotFound(RuntimeException ex, HttpServletRequest req) {
         log.error("Resource not found at {}: {}", req.getRequestURI(), ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
