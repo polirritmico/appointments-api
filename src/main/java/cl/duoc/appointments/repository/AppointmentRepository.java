@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    Optional<Appointment> findByClient(Long client);
+    Optional<Appointment> findByClientId(Long clientId);
 }

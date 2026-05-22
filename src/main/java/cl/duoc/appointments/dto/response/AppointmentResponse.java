@@ -18,8 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AppointmentResponse {
     private Long id;
-    private Long client;
-    private Long pet;
+    private Long clientId;
+    private Long petId;
+    private LocalDateTime scheduleAt;
     private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
