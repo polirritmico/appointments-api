@@ -8,11 +8,12 @@ package cl.duoc.appointments.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -21,39 +22,47 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+@Entity
 @Getter
 @Setter
-@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "appointments")
-public class Appointment {
+@Table(name = "clinical_records")
+public class ClinicalRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "client_id")
-    private Long client;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "appointment_id")
+    private Appointment appointment;
 
-    @Column(nullable = false, name = "pet_id")
-    private Long pet;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime scheduleAt;
-
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AppointmentStatus status;
+    private Long clientId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
+    private Long petId;
+
+    @Column(nullable = false)
+    private Long professionalId;
+
+    @Column(columnDefinition = "TEXT")
+    private String diagnosis;
+
+    @Column(columnDefinition = "TEXT")
+    private String treatment;
+
+    @Column(columnDefinition = "TEXT")
+    private String notes;
+
     @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
-
-    @Column
-    private LocalDateTime deletedAt;
 }
