@@ -7,6 +7,7 @@
 package cl.duoc.appointments.service;
 
 import cl.duoc.appointments.dto.response.ClinicalRecordResponse;
+import cl.duoc.appointments.exception.ClinicalRecordNotFoundException;
 import cl.duoc.appointments.mapper.DtoModelMapper;
 import cl.duoc.appointments.repository.ClinicalRecordRepository;
 import java.util.List;
@@ -32,5 +33,19 @@ public class ClinicalRecordService {
     public List<ClinicalRecordResponse> findAll() {
         logRequest("Starting findAll");
         return repo.findAll().stream().map(mapper::toClinicalRecordResponse).toList();
+    }
+
+    public ClinicalRecordResponse findById(Long recordId) {
+        logRequest("Starting findById with id: " + recordId);
+        return repo.findById(recordId)
+                .map(mapper::toClinicalRecordResponse)
+                .orElseThrow(() -> new ClinicalRecordNotFoundException(recordId));
+    }
+
+    public List<ClinicalRecordResponse> findByPetId(Long petId) {
+        logRequest("Starting findByPetId with id: " + petId);
+        return repo.findByPetId(petId).stream()
+                .map(mapper::toClinicalRecordResponse)
+                .toList();
     }
 }

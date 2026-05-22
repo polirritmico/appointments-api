@@ -7,8 +7,11 @@
 package cl.duoc.appointments.repository;
 
 import cl.duoc.appointments.model.ClinicalRecord;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClinicalRecordRepository extends JpaRepository<ClinicalRecord, Long> {}
+public interface ClinicalRecordRepository extends JpaRepository<ClinicalRecord, Long> {
+    List<ClinicalRecord> findByPetId(Long petId);
+}

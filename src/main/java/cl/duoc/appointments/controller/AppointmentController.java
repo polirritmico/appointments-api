@@ -8,6 +8,7 @@ package cl.duoc.appointments.controller;
 
 import cl.duoc.appointments.dto.response.AppointmentResponse;
 import cl.duoc.appointments.service.AppointmentService;
+import cl.duoc.appointments.service.ClinicalRecordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Appointments", description = "Provides appointments CRUD operations.")
 public class AppointmentController {
     private final AppointmentService service;
+    private final ClinicalRecordService clinicalService;
 
     @GetMapping
     private ResponseEntity<List<AppointmentResponse>> findAll() {

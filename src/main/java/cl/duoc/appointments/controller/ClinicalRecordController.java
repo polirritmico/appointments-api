@@ -13,6 +13,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,5 +27,15 @@ public class ClinicalRecordController {
     @GetMapping
     private ResponseEntity<List<ClinicalRecordResponse>> findAll() {
         return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{recordId}")
+    private ResponseEntity<ClinicalRecordResponse> findById(@PathVariable Long recordId) {
+        return ResponseEntity.ok(service.findById(recordId));
+    }
+
+    @GetMapping("/pet/{petId}")
+    private ResponseEntity<List<ClinicalRecordResponse>> findByPetId(@PathVariable Long petId) {
+        return ResponseEntity.ok(service.findByPetId(petId));
     }
 }
