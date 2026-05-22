@@ -34,13 +34,13 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "client_id")
-    private Long client;
+    @Column(nullable = false)
+    private Long clientId;
 
-    @Column(nullable = false, name = "pet_id")
-    private Long pet;
+    @Column(nullable = false)
+    private Long petId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private LocalDateTime scheduleAt;
 
     @Enumerated(EnumType.STRING)
