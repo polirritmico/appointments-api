@@ -8,9 +8,11 @@ package cl.duoc.appointments.mapper;
 
 import cl.duoc.appointments.dto.request.ClinicalRecordCreationRequest;
 import cl.duoc.appointments.dto.response.AppointmentResponse;
+import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
 import cl.duoc.appointments.dto.response.ClinicalRecordResponse;
 import cl.duoc.appointments.model.Appointment;
 import cl.duoc.appointments.model.ClinicalRecord;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +29,6 @@ public class DtoModelMapper {
                 .status(appointment.getStatus().name())
                 .createdAt(appointment.getCreatedAt())
                 .updatedAt(appointment.getUpdatedAt())
-                .deletedAt(appointment.getDeletedAt())
                 .build();
     }
 
@@ -57,6 +58,20 @@ public class DtoModelMapper {
                 .diagnosis(req.getDiagnosis())
                 .treatment(req.getTreatment())
                 .notes(req.getNotes())
+                .build();
+    }
+
+    public AppointmentWithRecordsResponse toAppointmentWithRecordsResponse(
+            Appointment appt, List<ClinicalRecord> records) {
+        return AppointmentWithRecordsResponse.builder()
+                .clientId(appt.getClientId())
+                .petId(appt.getClientId())
+                .professionalId(appt.getProfessionalId())
+                .scheduleAt(appt.getScheduleAt())
+                .status(appt.getStatus().name())
+                .records(records.stream().map(this::toClinicalRecordResponse).toList())
+                .createdAt(appt.getCreatedAt())
+                .updatedAt(appt.getUpdatedAt())
                 .build();
     }
 }

@@ -54,7 +54,7 @@ public class AppointmentController {
             description = "Retrieves a specific appointment combined with its associated clinical records.")
     @GetMapping("/{appointmentId}/full")
     public ResponseEntity<AppointmentWithRecordsResponse> getAppointmentWithRecords(@PathVariable Long appointmentId) {
-        throw new UnsupportedOperationException("Not implemented");
+        return ResponseEntity.ok(service.getAppointmentWithDetails(appointmentId));
     }
 
     @Operation(
@@ -62,7 +62,7 @@ public class AppointmentController {
             description = "Retrieves the historical and upcoming appointments for a specific pet.")
     @GetMapping("/pet/{petId}")
     public ResponseEntity<List<AppointmentResponse>> getScheduledAppointments(@PathVariable Long petId) {
-        throw new UnsupportedOperationException("Not implemented");
+        return ResponseEntity.ok(service.getAppointmentsByPetId(petId));
     }
 
     @Operation(

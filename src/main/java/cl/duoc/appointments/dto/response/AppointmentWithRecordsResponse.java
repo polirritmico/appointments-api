@@ -27,5 +27,4 @@ public class AppointmentWithRecordsResponse {
     private List<ClinicalRecordResponse> records;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
 }

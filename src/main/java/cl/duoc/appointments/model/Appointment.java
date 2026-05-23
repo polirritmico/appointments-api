@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
@@ -54,7 +55,7 @@ public class Appointment {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @Column

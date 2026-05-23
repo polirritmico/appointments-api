@@ -7,6 +7,7 @@
 package cl.duoc.appointments.repository;
 
 import cl.duoc.appointments.model.Appointment;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     Optional<Appointment> findByClientId(Long clientId);
+
+    Optional<Appointment> findAllByDeletedAtIsNull();
+
+    Optional<Appointment> findByIdAndDeletedAtIsNull(Long id);
+
+    List<Appointment> findByPetIdAndDeletedAtIsNull(Long petId);
 }

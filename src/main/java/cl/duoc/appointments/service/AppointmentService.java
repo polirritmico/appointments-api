@@ -7,9 +7,13 @@
 package cl.duoc.appointments.service;
 
 import cl.duoc.appointments.dto.response.AppointmentResponse;
+import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
 import cl.duoc.appointments.exception.AppointmentNotFoundException;
 import cl.duoc.appointments.mapper.DtoModelMapper;
+import cl.duoc.appointments.model.Appointment;
+import cl.duoc.appointments.model.ClinicalRecord;
 import cl.duoc.appointments.repository.AppointmentRepository;
+import cl.duoc.appointments.repository.ClinicalRecordRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +26,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AppointmentService {
     private final AppointmentRepository repo;
-    private final ClinicalRecordService clinicalService;
+    private final ClinicalRecordRepository recordRepo;
 
     private final DtoModelMapper mapper;
 
@@ -33,12 +37,29 @@ public class AppointmentService {
 
     public List<AppointmentResponse> findAll() {
         logRequest("Starting findAll");
-        return repo.findAll().stream().map(mapper::toAppointmentResponse).toList();
+        return repo.findAllByDeletedAtIsNull().stream()
+                .map(mapper::toAppointmentResponse)
+                .toList();
     }
 
     public AppointmentResponse getAppointmentById(Long appointmentId) {
         logRequest("Starting getAppointment with id: " + appointmentId);
-        return mapper.toAppointmentResponse(
-                repo.findById(appointmentId).orElseThrow(() -> new AppointmentNotFoundException(appointmentId)));
+        return mapper.toAppointmentResponse(repo.findByIdAndDeletedAtIsNull(appointmentId)
+                .orElseThrow(() -> new AppointmentNotFoundException(appointmentId)));
+    }
+
+    public AppointmentWithRecordsResponse getAppointmentWithDetails(Long appointmentId) {
+        logRequest("Starting getAppointmentWithDetails with id: " + appointmentId);
+        Appointment appt = repo.findByIdAndDeletedAtIsNull(appointmentId)
+                .orElseThrow(() -> new AppointmentNotFoundException(appointmentId));
+        List<ClinicalRecord> records = recordRepo.findByAppointmentId(appt.getId());
+        return mapper.toAppointmentWithRecordsResponse(appt, records);
+    }
+
+    public List<AppointmentResponse> getAppointmentsByPetId(Long petId) {
+        logRequest("Starting getAppointmentsByPetId with id: " + petId);
+        return repo.findByPetIdAndDeletedAtIsNull(petId).stream()
+                .map(mapper::toAppointmentResponse)
+                .toList();
     }
 }

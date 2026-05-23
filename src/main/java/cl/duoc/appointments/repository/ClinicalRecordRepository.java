@@ -16,4 +16,6 @@ public interface ClinicalRecordRepository extends JpaRepository<ClinicalRecord, 
     List<ClinicalRecord> findByPetId(Long petId);
 
     List<ClinicalRecord> findByClientId(Long clientId);
+
+    List<ClinicalRecord> findByAppointmentId(Long appointmentId);
 }
