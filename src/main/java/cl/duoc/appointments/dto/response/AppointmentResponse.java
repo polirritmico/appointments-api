@@ -20,6 +20,7 @@ public class AppointmentResponse {
     private Long id;
     private Long clientId;
     private Long petId;
+    private Long professionalId;
     private LocalDateTime scheduleAt;
     private String status;
     private LocalDateTime createdAt;

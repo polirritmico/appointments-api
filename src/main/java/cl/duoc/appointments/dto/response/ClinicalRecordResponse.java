@@ -22,6 +22,7 @@ public class ClinicalRecordResponse {
     private Long clientId;
     private Long petId;
     private Long professionalId;
+    private String visitReason;
     private String diagnosis;
     private String treatment;
     private String notes;
