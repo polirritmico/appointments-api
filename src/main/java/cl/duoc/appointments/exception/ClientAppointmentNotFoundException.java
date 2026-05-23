@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClientAppointmentNotFoundException extends RuntimeException {
     public ClientAppointmentNotFoundException(Long clientId) {
-        String msg = "Client with id '" + clientId + "' does not have an appointment registered in the DB.";
+        String msg = "Client with id '" + clientId + "' does not have an appointment registered";
         log.error(msg);
         super(msg);
     }

@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
+        AppointmentNotFoundException.class,
         ClientAppointmentNotFoundException.class,
         ClinicalRecordNotFoundException.class,
         ResourceNotFoundException.class
