@@ -41,6 +41,9 @@ public class Appointment {
     private Long petId;
 
     @Column(nullable = false)
+    private Long professionalId;
+
+    @Column(nullable = false)
     private LocalDateTime scheduleAt;
 
     @Enumerated(EnumType.STRING)
