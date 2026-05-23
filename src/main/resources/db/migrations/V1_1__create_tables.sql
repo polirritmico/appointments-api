@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: May 22, 2026 at 08:34 PM
+-- Generation Time: May 23, 2026 at 05:11 AM
 -- Server version: 8.4.8
 -- PHP Version: 8.3.26
 
@@ -28,14 +28,15 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `appointments` (
-  `client_id` bigint NOT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `deleted_at` datetime(6) DEFAULT NULL,
   `id` bigint NOT NULL,
+  `client_id` bigint NOT NULL,
   `pet_id` bigint NOT NULL,
+  `professional_id` bigint NOT NULL,
   `schedule_at` datetime(6) NOT NULL,
+  `status` enum('ARRIVED','CANCELED','COMPLETED','CONFIRMED','IN_PROGRESS','MISSED','PENDING') NOT NULL,
+  `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) DEFAULT NULL,
-  `status` enum('ARRIVED','CANCELED','COMPLETED','CONFIRMED','IN_PROGRESS','MISSED','PENDING') NOT NULL
+  `deleted_at` datetime(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -45,16 +46,17 @@ CREATE TABLE `appointments` (
 --
 
 CREATE TABLE `clinical_records` (
+  `id` bigint NOT NULL,
   `appointment_id` bigint NOT NULL,
   `client_id` bigint NOT NULL,
-  `created_at` datetime(6) NOT NULL,
-  `id` bigint NOT NULL,
   `pet_id` bigint NOT NULL,
   `professional_id` bigint NOT NULL,
-  `updated_at` datetime(6) DEFAULT NULL,
+  `visit_reason` text,
   `diagnosis` text,
+  `treatment` text,
   `notes` text,
-  `treatment` text
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -104,4 +106,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
