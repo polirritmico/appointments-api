@@ -46,4 +46,17 @@ public class DtoModelMapper {
                 .updatedAt(record.getCreatedAt())
                 .build();
     }
+
+    public ClinicalRecord clinicalRecordFromCreationRequest(ClinicalRecordCreationRequest req, Appointment appt) {
+        return ClinicalRecord.builder()
+                .appointment(appt)
+                .clientId(appt.getClientId())
+                .petId(appt.getPetId())
+                .professionalId(appt.getProfessionalId())
+                .visitReason(req.getVisitReason())
+                .diagnosis(req.getDiagnosis())
+                .treatment(req.getTreatment())
+                .notes(req.getNotes())
+                .build();
+    }
 }
