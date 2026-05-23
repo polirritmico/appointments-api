@@ -11,9 +11,11 @@ import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
 import cl.duoc.appointments.exception.AppointmentNotFoundException;
 import cl.duoc.appointments.mapper.DtoModelMapper;
 import cl.duoc.appointments.model.Appointment;
+import cl.duoc.appointments.model.AppointmentStatus;
 import cl.duoc.appointments.model.ClinicalRecord;
 import cl.duoc.appointments.repository.AppointmentRepository;
 import cl.duoc.appointments.repository.ClinicalRecordRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,5 +63,14 @@ public class AppointmentService {
         return repo.findByPetIdAndDeletedAtIsNull(petId).stream()
                 .map(mapper::toAppointmentResponse)
                 .toList();
+    }
+
+    @Transactional
+    public AppointmentResponse updateStatus(Long appointmentId, AppointmentStatus status) {
+        logRequest("Starting updateStatus with appointment id: " + appointmentId);
+        Appointment appt =
+                repo.findById(appointmentId).orElseThrow(() -> new AppointmentNotFoundException(appointmentId));
+        appt.setStatus(status);
+        return mapper.toAppointmentResponse(appt);
     }
 }

@@ -72,7 +72,7 @@ public class AppointmentController {
     @PatchMapping("/{appointmentId}/status")
     public ResponseEntity<AppointmentResponse> updateStatus(
             @PathVariable Long appointmentId, @RequestParam AppointmentStatus status) {
-        throw new UnsupportedOperationException("Not implemented");
+        return ResponseEntity.ok(service.updateStatus(appointmentId, status));
     }
 
     @Operation(summary = "Schedule a new appointment", description = "Creates a new appointment record in the system.")
