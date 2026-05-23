@@ -6,6 +6,7 @@
  */
 package cl.duoc.appointments.mapper;
 
+import cl.duoc.appointments.dto.request.ClinicalRecordCreationRequest;
 import cl.duoc.appointments.dto.response.AppointmentResponse;
 import cl.duoc.appointments.dto.response.ClinicalRecordResponse;
 import cl.duoc.appointments.model.Appointment;
@@ -21,6 +22,7 @@ public class DtoModelMapper {
                 .id(appointment.getId())
                 .clientId(appointment.getClientId())
                 .petId(appointment.getPetId())
+                .professionalId(appointment.getProfessionalId())
                 .scheduleAt(appointment.getScheduleAt())
                 .status(appointment.getStatus().name())
                 .createdAt(appointment.getCreatedAt())
@@ -36,6 +38,7 @@ public class DtoModelMapper {
                 .clientId(record.getClientId())
                 .petId(record.getPetId())
                 .professionalId(record.getProfessionalId())
+                .visitReason(record.getVisitReason())
                 .diagnosis(record.getDiagnosis())
                 .treatment(record.getTreatment())
                 .notes(record.getNotes())
