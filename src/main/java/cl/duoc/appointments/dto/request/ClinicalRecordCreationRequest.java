@@ -16,7 +16,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClinicalRecordCreationRequest {
-    @NotNull(message = "La consulta debe estar asociada a un cliente")
-    @Positive(message = "La id del cliente no puede ser negativa")
-    private Long clientId;
+    @NotNull(message = "El id de la consulta es obligatorio")
+    @Positive(message = "El id de la consulta no puede ser negativo")
+    private Long appoinmentId;
+
+    private String visitReason;
+
+    private String diagnosis;
+
+    private String treatment;
+
+    private String notes;
 }
