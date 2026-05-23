@@ -6,14 +6,21 @@
  */
 package cl.duoc.appointments.controller;
 
+import cl.duoc.appointments.dto.request.AppointmentCreationRequest;
 import cl.duoc.appointments.dto.response.AppointmentResponse;
+import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
 import cl.duoc.appointments.service.AppointmentService;
 import cl.duoc.appointments.service.ClinicalRecordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +33,32 @@ public class AppointmentController {
     private final ClinicalRecordService clinicalService;
 
     @GetMapping
-    private ResponseEntity<List<AppointmentResponse>> findAll() {
+    public ResponseEntity<List<AppointmentResponse>> findAll() {
         return ResponseEntity.ok(service.findAll());
+    }
+
+    @GetMapping("/{appointmentId}")
+    public ResponseEntity<AppointmentResponse> getAppointment(@PathVariable Long appointmentId) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @GetMapping("/{appointmentId}/full")
+    public ResponseEntity<AppointmentWithRecordsResponse> getAppointmentWithRecords(@PathVariable Long appointmentId) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @GetMapping("/pet/{petId}")
+    public ResponseEntity<List<AppointmentResponse>> getScheduledAppointments(@PathVariable Long petId) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @PatchMapping("/{appointmentId}/status")
+    public AppointmentResponse updateStatus(@PathVariable Long appointmentId) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @PostMapping
+    public AppointmentResponse createAppointment(@Valid @RequestBody AppointmentCreationRequest req) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 }
