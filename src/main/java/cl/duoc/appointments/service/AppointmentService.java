@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AppointmentService {
     private final AppointmentRepository repo;
+    private final ClinicalRecordService clinicalService;
 
     private final DtoModelMapper mapper;
 
