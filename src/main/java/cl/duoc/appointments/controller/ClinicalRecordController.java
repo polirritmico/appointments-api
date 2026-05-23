@@ -30,22 +30,22 @@ public class ClinicalRecordController {
     private final ClinicalRecordService service;
 
     @GetMapping
-    private ResponseEntity<List<ClinicalRecordResponse>> findAll() {
+    public ResponseEntity<List<ClinicalRecordResponse>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{recordId}")
-    private ResponseEntity<ClinicalRecordResponse> findById(@PathVariable Long recordId) {
+    public ResponseEntity<ClinicalRecordResponse> findById(@PathVariable Long recordId) {
         return ResponseEntity.ok(service.findById(recordId));
     }
 
     @GetMapping("/pet/{petId}")
-    private ResponseEntity<List<ClinicalRecordResponse>> findByPetId(@PathVariable Long petId) {
+    public ResponseEntity<List<ClinicalRecordResponse>> findByPetId(@PathVariable Long petId) {
         return ResponseEntity.ok(service.findByPetId(petId));
     }
 
     @PostMapping
-    private ResponseEntity<ClinicalRecordResponse> createRecord(@Valid @RequestBody ClinicalRecordCreationRequest req) {
+    public ResponseEntity<ClinicalRecordResponse> createRecord(@Valid @RequestBody ClinicalRecordCreationRequest req) {
         ClinicalRecordResponse res = service.saveRecord(req);
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("{id}")
