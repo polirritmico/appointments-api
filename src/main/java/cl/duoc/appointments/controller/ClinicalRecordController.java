@@ -6,16 +6,21 @@
  */
 package cl.duoc.appointments.controller;
 
+import cl.duoc.appointments.dto.request.ClinicalRecordCreationRequest;
 import cl.duoc.appointments.dto.response.ClinicalRecordResponse;
 import cl.duoc.appointments.service.ClinicalRecordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/v1/clinical-records")
@@ -37,5 +42,15 @@ public class ClinicalRecordController {
     @GetMapping("/pet/{petId}")
     private ResponseEntity<List<ClinicalRecordResponse>> findByPetId(@PathVariable Long petId) {
         return ResponseEntity.ok(service.findByPetId(petId));
+    }
+
+    @PostMapping
+    private ResponseEntity<ClinicalRecordResponse> createRecord(@Valid @RequestBody ClinicalRecordCreationRequest req) {
+        ClinicalRecordResponse res = service.saveRecord(req);
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("{id}")
+                        .buildAndExpand(res.getId())
+                        .toUri())
+                .body(res);
     }
 }
