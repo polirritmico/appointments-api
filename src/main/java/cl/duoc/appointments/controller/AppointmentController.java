@@ -9,8 +9,9 @@ package cl.duoc.appointments.controller;
 import cl.duoc.appointments.dto.request.AppointmentCreationRequest;
 import cl.duoc.appointments.dto.response.AppointmentResponse;
 import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
+import cl.duoc.appointments.model.AppointmentStatus;
 import cl.duoc.appointments.service.AppointmentService;
-import cl.duoc.appointments.service.ClinicalRecordService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,35 +32,52 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Appointments", description = "Provides appointments CRUD operations.")
 public class AppointmentController {
     private final AppointmentService service;
-    private final ClinicalRecordService clinicalService;
 
+    @Operation(
+            summary = "List all appointments",
+            description = "Retrieves a full list of all recorded appointments in the system.")
     @GetMapping
     public ResponseEntity<List<AppointmentResponse>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
+    @Operation(
+            summary = "Get appointment by Id",
+            description = "Retrieves basic details of a specific appointment using its unique identifier.")
     @GetMapping("/{appointmentId}")
     public ResponseEntity<AppointmentResponse> getAppointment(@PathVariable Long appointmentId) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
+    @Operation(
+            summary = "Get full appointment details",
+            description = "Retrieves a specific appointment combined with its associated clinical records.")
     @GetMapping("/{appointmentId}/full")
     public ResponseEntity<AppointmentWithRecordsResponse> getAppointmentWithRecords(@PathVariable Long appointmentId) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
+    @Operation(
+            summary = "Get appointments by pet Id",
+            description = "Retrieves the historical and upcoming appointments for a specific pet.")
     @GetMapping("/pet/{petId}")
     public ResponseEntity<List<AppointmentResponse>> getScheduledAppointments(@PathVariable Long petId) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
+    @Operation(
+            summary = "Update appointment status",
+            description =
+                    "Updates the current lifecycle status of the appointment (e.g., CONFIRMED, COMPLETED, CANCELED).")
     @PatchMapping("/{appointmentId}/status")
-    public AppointmentResponse updateStatus(@PathVariable Long appointmentId) {
+    public ResponseEntity<AppointmentResponse> updateStatus(
+            @PathVariable Long appointmentId, @RequestParam AppointmentStatus status) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
+    @Operation(summary = "Schedule a new appointment", description = "Creates a new appointment record in the system.")
     @PostMapping
-    public AppointmentResponse createAppointment(@Valid @RequestBody AppointmentCreationRequest req) {
+    public ResponseEntity<AppointmentResponse> createAppointment(@Valid @RequestBody AppointmentCreationRequest req) {
         throw new UnsupportedOperationException("Not implemented");
     }
 }
