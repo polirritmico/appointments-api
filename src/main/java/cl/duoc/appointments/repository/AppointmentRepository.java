@@ -14,11 +14,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    Optional<Appointment> findByClientId(Long clientId);
-
-    Optional<Appointment> findAllByDeletedAtIsNull();
-
     Optional<Appointment> findByIdAndDeletedAtIsNull(Long id);
+
+    List<Appointment> findByClientId(Long clientId);
+
+    List<Appointment> findAllByDeletedAtIsNull();
 
     List<Appointment> findByPetIdAndDeletedAtIsNull(Long petId);
 }
