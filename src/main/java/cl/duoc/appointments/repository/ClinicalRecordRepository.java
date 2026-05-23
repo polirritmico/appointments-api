@@ -14,4 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClinicalRecordRepository extends JpaRepository<ClinicalRecord, Long> {
     List<ClinicalRecord> findByPetId(Long petId);
+
+    List<ClinicalRecord> findByClientId(Long clientId);
 }
