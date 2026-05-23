@@ -50,6 +50,9 @@ public class ClinicalRecord {
     private Long professionalId;
 
     @Column(columnDefinition = "TEXT")
+    private String visitReason;
+
+    @Column(columnDefinition = "TEXT")
     private String diagnosis;
 
     @Column(columnDefinition = "TEXT")
