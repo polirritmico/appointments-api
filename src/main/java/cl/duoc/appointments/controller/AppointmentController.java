@@ -46,7 +46,7 @@ public class AppointmentController {
             description = "Retrieves basic details of a specific appointment using its unique identifier.")
     @GetMapping("/{appointmentId}")
     public ResponseEntity<AppointmentResponse> getAppointment(@PathVariable Long appointmentId) {
-        throw new UnsupportedOperationException("Not implemented");
+        return ResponseEntity.ok(service.getAppointmentById(appointmentId));
     }
 
     @Operation(

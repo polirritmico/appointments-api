@@ -7,6 +7,7 @@
 package cl.duoc.appointments.service;
 
 import cl.duoc.appointments.dto.response.AppointmentResponse;
+import cl.duoc.appointments.exception.AppointmentNotFoundException;
 import cl.duoc.appointments.mapper.DtoModelMapper;
 import cl.duoc.appointments.repository.AppointmentRepository;
 import java.util.List;
@@ -33,5 +34,11 @@ public class AppointmentService {
     public List<AppointmentResponse> findAll() {
         logRequest("Starting findAll");
         return repo.findAll().stream().map(mapper::toAppointmentResponse).toList();
+    }
+
+    public AppointmentResponse getAppointmentById(Long appointmentId) {
+        logRequest("Starting getAppointment with id: " + appointmentId);
+        return mapper.toAppointmentResponse(
+                repo.findById(appointmentId).orElseThrow(() -> new AppointmentNotFoundException(appointmentId)));
     }
 }
