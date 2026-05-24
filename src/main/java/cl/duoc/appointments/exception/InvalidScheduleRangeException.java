@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 @Slf4j
 public class InvalidScheduleRangeException extends DomainException {
     public InvalidScheduleRangeException(LocalDateTime init, LocalDateTime end) {
-        String msg = String.format("Appointment has an invalid time range: %s, %s", init, end);
+        String msg = String.format("Appointment has an invalid time range: %s to %s", init, end);
         super(msg, HttpStatus.BAD_REQUEST);
     }
 }
