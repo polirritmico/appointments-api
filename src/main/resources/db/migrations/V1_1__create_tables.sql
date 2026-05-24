@@ -33,6 +33,7 @@ CREATE TABLE `appointments` (
   `pet_id` bigint NOT NULL,
   `professional_id` bigint NOT NULL,
   `schedule_at` datetime(6) NOT NULL,
+  `end_schedule_at` datetime(6) NOT NULL,
   `status` enum('ARRIVED','CANCELED','COMPLETED','CONFIRMED','IN_PROGRESS','MISSED','PENDING') NOT NULL,
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) DEFAULT NULL,
