@@ -23,6 +23,7 @@ public class AppointmentWithRecordsResponse {
     private Long petId;
     private Long professionalId;
     private LocalDateTime scheduleAt;
+    private LocalDateTime endScheduleAt;
     private String status;
     private List<ClinicalRecordResponse> records;
     private LocalDateTime createdAt;

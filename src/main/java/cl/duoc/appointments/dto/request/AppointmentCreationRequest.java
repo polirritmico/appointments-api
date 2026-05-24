@@ -26,7 +26,15 @@ public class AppointmentCreationRequest {
     @Positive(message = "La id de la mascota no puede ser negativa")
     private Long petId;
 
+    @NotNull(message = "La consulta debe estar asociada a un profesional")
+    @Positive(message = "El identificador del profesional no puede ser negativo")
+    private Long professionalId;
+
     @NotNull(message = "La consulta debe tener fecha y hora")
     @FutureOrPresent
     private LocalDateTime scheduleAt;
+
+    @NotNull(message = "La consulta debe tener fecha y hora de término")
+    @FutureOrPresent
+    private LocalDateTime endScheduleAt;
 }

@@ -22,6 +22,7 @@ public class AppointmentResponse {
     private Long petId;
     private Long professionalId;
     private LocalDateTime scheduleAt;
+    private LocalDateTime endScheduleAt;
     private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

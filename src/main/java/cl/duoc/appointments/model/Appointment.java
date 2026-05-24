@@ -47,6 +47,9 @@ public class Appointment {
     @Column(nullable = false)
     private LocalDateTime scheduleAt;
 
+    @Column(nullable = false)
+    private LocalDateTime endScheduleAt;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AppointmentStatus status;
