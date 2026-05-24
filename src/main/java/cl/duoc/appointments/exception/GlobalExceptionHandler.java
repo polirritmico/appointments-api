@@ -35,8 +35,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
         AppointmentNotFoundException.class,
+        AppointmentScheduleConflictException.class,
         ClientAppointmentNotFoundException.class,
         ClinicalRecordNotFoundException.class,
+        InvalidScheduleRangeException.class,
         ResourceNotFoundException.class
     })
     public ResponseEntity<ApiErrorResponse> handleNotFound(RuntimeException ex, HttpServletRequest req) {
