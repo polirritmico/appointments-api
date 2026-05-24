@@ -78,6 +78,6 @@ public class AppointmentController {
     @Operation(summary = "Schedule a new appointment", description = "Creates a new appointment record in the system.")
     @PostMapping
     public ResponseEntity<AppointmentResponse> createAppointment(@Valid @RequestBody AppointmentCreationRequest req) {
-        throw new UnsupportedOperationException("Not implemented");
+        return ResponseEntity.ok(service.scheduleAppointment(req));
     }
 }
