@@ -7,12 +7,12 @@
 package cl.duoc.appointments.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 
 @Slf4j
-public class ClinicalRecordNotFoundException extends RuntimeException {
+public class ClinicalRecordNotFoundException extends DomainException {
     public ClinicalRecordNotFoundException(Long recordId) {
         String msg = "Clinical record with id '" + recordId + "' not found.";
-        log.error(msg);
-        super(msg);
+        super(msg, HttpStatus.NOT_FOUND);
     }
 }

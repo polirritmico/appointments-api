@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationErrors(MethodArgumentNotValidException ex) {
         log.error("Param validation failed: {}", ex);
@@ -33,21 +34,26 @@ public class GlobalExceptionHandler {
                                 (prevErr, newErr) -> prevErr + ", " + newErr)));
     }
 
-    @ExceptionHandler({
-        AppointmentNotFoundException.class,
-        AppointmentScheduleConflictException.class,
-        ClientAppointmentNotFoundException.class,
-        ClinicalRecordNotFoundException.class,
-        InvalidScheduleRangeException.class,
-        ResourceNotFoundException.class
-    })
-    public ResponseEntity<ApiErrorResponse> handleNotFound(RuntimeException ex, HttpServletRequest req) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleNotFound(ResourceNotFoundException ex, HttpServletRequest req) {
         log.error("Resource not found at {}: {}", req.getRequestURI(), ex.getMessage(), ex);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex, req);
+    }
+
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<ApiErrorResponse> handleDomainException(DomainException ex, HttpServletRequest req) {
+        HttpStatus status = ex.getStatus();
+        log.error("Domain exception thrown at {} [{}]: {}", req.getRequestURI(), status.value(), ex.getMessage(), ex);
+        return buildErrorResponse(status, ex, req);
+    }
+
+    private ResponseEntity<ApiErrorResponse> buildErrorResponse(
+            HttpStatus status, RuntimeException ex, HttpServletRequest req) {
+        return ResponseEntity.status(status)
                 .body(ApiErrorResponse.builder()
                         .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                        .status(status.value())
+                        .error(status.getReasonPhrase())
                         .message(ex.getMessage())
                         .path(req.getRequestURI())
                         .kind(ex.getClass().getSimpleName())

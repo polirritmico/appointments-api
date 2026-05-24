@@ -8,12 +8,12 @@ package cl.duoc.appointments.exception;
 
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 
 @Slf4j
-public class InvalidScheduleRangeException extends RuntimeException {
+public class InvalidScheduleRangeException extends DomainException {
     public InvalidScheduleRangeException(LocalDateTime init, LocalDateTime end) {
         String msg = String.format("Appointment has an invalid time range: %s, %s", init, end);
-        log.error(msg);
-        super(msg);
+        super(msg, HttpStatus.BAD_REQUEST);
     }
 }
