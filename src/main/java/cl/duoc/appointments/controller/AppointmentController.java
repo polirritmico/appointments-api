@@ -14,8 +14,10 @@ import cl.duoc.appointments.service.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -79,5 +81,16 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<AppointmentResponse> createAppointment(@Valid @RequestBody AppointmentCreationRequest req) {
         return ResponseEntity.ok(service.scheduleAppointment(req));
+    }
+
+    @Operation(
+            summary = "Get schedules for multiple professionals",
+            description = "Retrieves a consolidated list of appointments for various professionals on a specific date.")
+    @GetMapping("/schedules")
+    public ResponseEntity<List<AppointmentResponse>> getSchedulesForProfessionals(
+            @RequestParam List<Long> professionalIds,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        return ResponseEntity.ok(service.getSchedulesForProfessionals(professionalIds, date));
     }
 }

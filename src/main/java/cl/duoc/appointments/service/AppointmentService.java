@@ -19,6 +19,7 @@ import cl.duoc.appointments.model.ClinicalRecord;
 import cl.duoc.appointments.repository.AppointmentRepository;
 import cl.duoc.appointments.repository.ClinicalRecordRepository;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +66,14 @@ public class AppointmentService {
     public List<AppointmentResponse> getAppointmentsByPetId(Long petId) {
         logRequest("Starting getAppointmentsByPetId with id: " + petId);
         return repo.findByPetIdAndDeletedAtIsNull(petId).stream()
+                .map(mapper::toAppointmentResponse)
+                .toList();
+    }
+
+    public List<AppointmentResponse> getSchedulesForProfessionals(List<Long> professionalIds, LocalDate date) {
+        LocalDateTime targetDate = date.atStartOfDay();
+        return professionalIds.stream()
+                .flatMap(id -> repo.findProfessionalDaySchedule(id, targetDate).stream())
                 .map(mapper::toAppointmentResponse)
                 .toList();
     }
