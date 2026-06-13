@@ -6,13 +6,12 @@
  */
 package cl.duoc.appointments.controller;
 
+import cl.duoc.appointments.api.AppointmentApi;
 import cl.duoc.appointments.dto.request.AppointmentCreationRequest;
 import cl.duoc.appointments.dto.response.AppointmentResponse;
 import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
 import cl.duoc.appointments.model.AppointmentStatus;
 import cl.duoc.appointments.service.AppointmentService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,61 +30,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/appointments")
 @RequiredArgsConstructor
-@Tag(name = "Appointments", description = "Provides appointments CRUD operations.")
-public class AppointmentController {
+public class AppointmentController implements AppointmentApi {
     private final AppointmentService service;
 
-    @Operation(
-            summary = "List all appointments",
-            description = "Retrieves a full list of all recorded appointments in the system.")
     @GetMapping
     public ResponseEntity<List<AppointmentResponse>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @Operation(
-            summary = "Get appointment by Id",
-            description = "Retrieves basic details of a specific appointment using its unique identifier.")
     @GetMapping("/{appointmentId}")
     public ResponseEntity<AppointmentResponse> getAppointment(@PathVariable Long appointmentId) {
         return ResponseEntity.ok(service.getAppointmentById(appointmentId));
     }
 
-    @Operation(
-            summary = "Get full appointment details",
-            description = "Retrieves a specific appointment combined with its associated clinical records.")
     @GetMapping("/{appointmentId}/full")
     public ResponseEntity<AppointmentWithRecordsResponse> getAppointmentWithRecords(@PathVariable Long appointmentId) {
         return ResponseEntity.ok(service.getAppointmentWithDetails(appointmentId));
     }
 
-    @Operation(
-            summary = "Get appointments by pet Id",
-            description = "Retrieves the historical and upcoming appointments for a specific pet.")
     @GetMapping("/pet/{petId}")
     public ResponseEntity<List<AppointmentResponse>> getScheduledAppointments(@PathVariable Long petId) {
         return ResponseEntity.ok(service.getAppointmentsByPetId(petId));
     }
 
-    @Operation(
-            summary = "Update appointment status",
-            description =
-                    "Updates the current lifecycle status of the appointment (e.g., CONFIRMED, COMPLETED, CANCELED).")
     @PatchMapping("/{appointmentId}/status")
     public ResponseEntity<AppointmentResponse> updateStatus(
             @PathVariable Long appointmentId, @RequestParam AppointmentStatus status) {
         return ResponseEntity.ok(service.updateStatus(appointmentId, status));
     }
 
-    @Operation(summary = "Schedule a new appointment", description = "Creates a new appointment record in the system.")
     @PostMapping
     public ResponseEntity<AppointmentResponse> createAppointment(@Valid @RequestBody AppointmentCreationRequest req) {
         return ResponseEntity.ok(service.scheduleAppointment(req));
     }
 
-    @Operation(
-            summary = "Get schedules for multiple professionals",
-            description = "Retrieves a consolidated list of appointments for various professionals on a specific date.")
     @GetMapping("/schedules")
     public ResponseEntity<List<AppointmentResponse>> getSchedulesForProfessionals(
             @RequestParam List<Long> professionalIds,
