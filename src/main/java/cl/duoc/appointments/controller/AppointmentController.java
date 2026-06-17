@@ -65,10 +65,10 @@ public class AppointmentController implements AppointmentApi {
     }
 
     @GetMapping("/schedules")
-    public ResponseEntity<List<AppointmentResponse>> getSchedulesForProfessionals(
+    public ResponseEntity<List<AppointmentResponse>> getProfessionalSchedules(
             @RequestParam List<Long> professionalIds,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
 
-        return ResponseEntity.ok(service.getSchedulesForProfessionals(professionalIds, date));
+        return ResponseEntity.ok(service.getProfessionalSchedules(professionalIds, date));
     }
 }

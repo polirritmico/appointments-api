@@ -70,7 +70,7 @@ public class AppointmentService {
                 .toList();
     }
 
-    public List<AppointmentResponse> getSchedulesForProfessionals(List<Long> professionalIds, LocalDate date) {
+    public List<AppointmentResponse> getProfessionalSchedules(List<Long> professionalIds, LocalDate date) {
         LocalDateTime targetDate = date.atStartOfDay();
         return professionalIds.stream()
                 .flatMap(id -> repo.findProfessionalDaySchedule(id, targetDate).stream())

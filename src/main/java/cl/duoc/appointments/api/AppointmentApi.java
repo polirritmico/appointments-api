@@ -50,5 +50,5 @@ public interface AppointmentApi {
     @Operation(
             summary = "Get schedules for multiple professionals",
             description = "Retrieves a consolidated list of appointments for various professionals on a specific date.")
-    ResponseEntity<List<AppointmentResponse>> getSchedulesForProfessionals(List<Long> professionalIds, LocalDate date);
+    ResponseEntity<List<AppointmentResponse>> getProfessionalSchedules(List<Long> professionalIds, LocalDate date);
 }
