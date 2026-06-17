@@ -11,10 +11,15 @@ import cl.duoc.appointments.dto.request.ClinicalRecordCreationRequest;
 import cl.duoc.appointments.dto.response.AppointmentResponse;
 import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
 import cl.duoc.appointments.dto.response.ClinicalRecordResponse;
+import cl.duoc.appointments.dto.response.SearchAvailabilityResponse;
 import cl.duoc.appointments.model.Appointment;
 import cl.duoc.appointments.model.AppointmentStatus;
+import cl.duoc.appointments.model.ClinicSchedule;
 import cl.duoc.appointments.model.ClinicalRecord;
+import cl.duoc.appointments.model.Schedule;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -77,6 +82,20 @@ public class DtoModelMapper {
                 .treatment(req.getTreatment())
                 .notes(req.getNotes())
                 .build();
+    }
+
+    public List<SearchAvailabilityResponse> toSearchAvailabilityResponse(
+            ClinicSchedule clinicSchedule, List<Schedule> vetsAvailability) {
+        Map<Long, String> names = vetsAvailability.stream()
+                .collect(Collectors.toMap(pro -> pro.getId().value(), Schedule::getName));
+
+        return clinicSchedule.asMap().entrySet().stream()
+                .map(schedule -> SearchAvailabilityResponse.builder()
+                        .professionalId(schedule.getKey().value())
+                        .professionalName(names.get(schedule.getKey().value()))
+                        .availableSlots(schedule.getValue())
+                        .build())
+                .toList();
     }
 
     public Appointment appointmentFromCreationRequest(AppointmentCreationRequest req) {
