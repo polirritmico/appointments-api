@@ -60,7 +60,7 @@ public class DtoModelMapper {
             Appointment appt, List<ClinicalRecord> records) {
         return AppointmentWithRecordsResponse.builder()
                 .clientId(appt.getClientId())
-                .petId(appt.getClientId())
+                .petId(appt.getPetId())
                 .professionalId(appt.getProfessionalId())
                 .scheduleAt(appt.getScheduleAt())
                 .endScheduleAt(appt.getEndScheduleAt())
@@ -101,7 +101,7 @@ public class DtoModelMapper {
     public Appointment appointmentFromCreationRequest(AppointmentCreationRequest req) {
         return Appointment.builder()
                 .clientId(req.getClientId())
-                .petId(req.getClientId())
+                .petId(req.getPetId())
                 .professionalId(req.getProfessionalId())
                 .scheduleAt(req.getScheduleAt())
                 .endScheduleAt(req.getEndScheduleAt())
