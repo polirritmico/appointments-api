@@ -7,6 +7,7 @@
 package cl.duoc.appointments.service;
 
 import cl.duoc.appointments.dto.request.AppointmentCreationRequest;
+import cl.duoc.appointments.dto.request.SearchAvailabilityRequest;
 import cl.duoc.appointments.dto.response.AppointmentResponse;
 import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
 import cl.duoc.appointments.exception.AppointmentNotFoundException;
@@ -16,10 +17,10 @@ import cl.duoc.appointments.mapper.DtoModelMapper;
 import cl.duoc.appointments.model.Appointment;
 import cl.duoc.appointments.model.AppointmentStatus;
 import cl.duoc.appointments.model.ClinicalRecord;
+import cl.duoc.appointments.model.Schedule.ProfessionalId;
 import cl.duoc.appointments.repository.AppointmentRepository;
 import cl.duoc.appointments.repository.ClinicalRecordRepository;
 import jakarta.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -70,10 +71,12 @@ public class AppointmentService {
                 .toList();
     }
 
-    public List<AppointmentResponse> getProfessionalSchedules(List<Long> professionalIds, LocalDate date) {
-        LocalDateTime targetDate = date.atStartOfDay();
+    public List<AppointmentResponse> getProfessionalSchedules(SearchAvailabilityRequest req) {
+        LocalDateTime targetDate = req.getDate().atStartOfDay();
+        List<ProfessionalId> professionalIds =
+                req.getVetSchedules().stream().map(schedule -> schedule.getId()).toList();
         return professionalIds.stream()
-                .flatMap(id -> repo.findProfessionalDaySchedule(id, targetDate).stream())
+                .flatMap(id -> repo.findProfessionalDaySchedule(id.value(), targetDate).stream())
                 .map(mapper::toAppointmentResponse)
                 .toList();
     }

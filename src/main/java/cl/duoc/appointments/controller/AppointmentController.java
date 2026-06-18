@@ -64,7 +64,7 @@ public class AppointmentController implements AppointmentApi {
         return ResponseEntity.ok(service.scheduleAppointment(req));
     }
 
-    @GetMapping("/schedules")
+    @PostMapping("/schedules")
     public ResponseEntity<List<AppointmentResponse>> getProfessionalSchedules(
             @RequestParam List<Long> professionalIds,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
