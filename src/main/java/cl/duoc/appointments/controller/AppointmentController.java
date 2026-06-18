@@ -8,15 +8,16 @@ package cl.duoc.appointments.controller;
 
 import cl.duoc.appointments.api.AppointmentApi;
 import cl.duoc.appointments.dto.request.AppointmentCreationRequest;
+import cl.duoc.appointments.dto.request.SearchAvailabilityRequest;
 import cl.duoc.appointments.dto.response.AppointmentResponse;
 import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
+import cl.duoc.appointments.dto.response.SearchAvailabilityResponse;
 import cl.duoc.appointments.model.AppointmentStatus;
 import cl.duoc.appointments.service.AppointmentService;
+import cl.duoc.appointments.service.AvailabilityService;
 import jakarta.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AppointmentController implements AppointmentApi {
     private final AppointmentService service;
+    private final AvailabilityService availabilityService;
 
     @GetMapping
     public ResponseEntity<List<AppointmentResponse>> findAll() {
@@ -65,10 +67,8 @@ public class AppointmentController implements AppointmentApi {
     }
 
     @PostMapping("/schedules")
-    public ResponseEntity<List<AppointmentResponse>> getProfessionalSchedules(
-            @RequestParam List<Long> professionalIds,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-
-        return ResponseEntity.ok(service.getProfessionalSchedules(professionalIds, date));
+    public ResponseEntity<List<SearchAvailabilityResponse>> getProfessionalSchedules(
+            @Valid @RequestBody SearchAvailabilityRequest req) {
+        return ResponseEntity.ok(availabilityService.getAvailableScheduleHoursUseCase(req));
     }
 }

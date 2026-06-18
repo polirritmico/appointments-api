@@ -7,12 +7,13 @@
 package cl.duoc.appointments.api;
 
 import cl.duoc.appointments.dto.request.AppointmentCreationRequest;
+import cl.duoc.appointments.dto.request.SearchAvailabilityRequest;
 import cl.duoc.appointments.dto.response.AppointmentResponse;
 import cl.duoc.appointments.dto.response.AppointmentWithRecordsResponse;
+import cl.duoc.appointments.dto.response.SearchAvailabilityResponse;
 import cl.duoc.appointments.model.AppointmentStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.time.LocalDate;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 
@@ -50,5 +51,5 @@ public interface AppointmentApi {
     @Operation(
             summary = "Get schedules for multiple professionals",
             description = "Retrieves a consolidated list of appointments for various professionals on a specific date.")
-    ResponseEntity<List<AppointmentResponse>> getProfessionalSchedules(List<Long> professionalIds, LocalDate date);
+    ResponseEntity<List<SearchAvailabilityResponse>> getProfessionalSchedules(SearchAvailabilityRequest req);
 }
