@@ -71,7 +71,14 @@ public class AppointmentService {
                 .toList();
     }
 
-    public List<AppointmentResponse> getProfessionalSchedules(SearchAvailabilityRequest req) {
+    public List<AppointmentResponse> getAppointmentsByProfessionalId(Long professionalId) {
+        logRequest("Starting getAppointmentsByProfessionalId with id: " + professionalId);
+        return repo.findByProfessionalIdAndDeletedAtIsNull(professionalId).stream()
+                .map(mapper::toAppointmentResponse)
+                .toList();
+    }
+
+    public List<AppointmentResponse> getProfessionalDaySchedules(SearchAvailabilityRequest req) {
         LocalDateTime targetDate = req.getDate().atStartOfDay();
         List<ProfessionalId> professionalIds =
                 req.getVetSchedules().stream().map(schedule -> schedule.getId()).toList();

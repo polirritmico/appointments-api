@@ -26,6 +26,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findByPetIdAndDeletedAtIsNull(Long petId);
 
+    List<Appointment> findByProfessionalIdAndDeletedAtIsNull(Long professionalId);
+
     List<Appointment> findByProfessionalIdAndScheduleAtBetweenAndDeletedAtIsNull(
             Long professionalId, LocalDateTime startOfDay, LocalDateTime endOfDay);
 

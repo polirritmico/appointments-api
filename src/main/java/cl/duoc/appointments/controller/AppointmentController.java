@@ -51,8 +51,14 @@ public class AppointmentController implements AppointmentApi {
     }
 
     @GetMapping("/pet/{petId}")
-    public ResponseEntity<List<AppointmentResponse>> getScheduledAppointments(@PathVariable Long petId) {
+    public ResponseEntity<List<AppointmentResponse>> getScheduledAppointmentsByPet(@PathVariable Long petId) {
         return ResponseEntity.ok(service.getAppointmentsByPetId(petId));
+    }
+
+    @GetMapping("/professional/{professionalId}")
+    public ResponseEntity<List<AppointmentResponse>> getScheduledAppointmentsByProfessional(
+            @PathVariable Long professionalId) {
+        return ResponseEntity.ok(service.getAppointmentsByProfessionalId(professionalId));
     }
 
     @PatchMapping("/{appointmentId}/status")
@@ -67,7 +73,7 @@ public class AppointmentController implements AppointmentApi {
     }
 
     @PostMapping("/schedules")
-    public ResponseEntity<List<SearchAvailabilityResponse>> getProfessionalSchedules(
+    public ResponseEntity<List<SearchAvailabilityResponse>> getProfessionalDaySchedules(
             @Valid @RequestBody SearchAvailabilityRequest req) {
         return ResponseEntity.ok(availabilityService.getAvailableScheduleHoursUseCase(req));
     }

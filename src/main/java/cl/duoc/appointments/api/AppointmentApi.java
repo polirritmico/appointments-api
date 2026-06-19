@@ -37,7 +37,12 @@ public interface AppointmentApi {
     @Operation(
             summary = "Get appointments by pet Id",
             description = "Retrieves the historical and upcoming appointments for a specific pet.")
-    ResponseEntity<List<AppointmentResponse>> getScheduledAppointments(Long petId);
+    ResponseEntity<List<AppointmentResponse>> getScheduledAppointmentsByPet(Long petId);
+
+    @Operation(
+            summary = "Get appointments by professional Id",
+            description = "Retrieves the historical and upcoming appointments for a specific professional.")
+    ResponseEntity<List<AppointmentResponse>> getScheduledAppointmentsByProfessional(Long professionalId);
 
     @Operation(
             summary = "Update appointment status",
@@ -51,5 +56,5 @@ public interface AppointmentApi {
     @Operation(
             summary = "Get schedules for multiple professionals",
             description = "Retrieves a consolidated list of appointments for various professionals on a specific date.")
-    ResponseEntity<List<SearchAvailabilityResponse>> getProfessionalSchedules(SearchAvailabilityRequest req);
+    ResponseEntity<List<SearchAvailabilityResponse>> getProfessionalDaySchedules(SearchAvailabilityRequest req);
 }
