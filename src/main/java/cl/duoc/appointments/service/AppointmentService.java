@@ -79,6 +79,7 @@ public class AppointmentService {
     }
 
     public List<AppointmentResponse> getProfessionalDaySchedules(SearchAvailabilityRequest req) {
+        logRequest("Starting getProfessionalDaySchedules");
         LocalDateTime targetDate = req.getDate().atStartOfDay();
         List<ProfessionalId> professionalIds =
                 req.getVetSchedules().stream().map(schedule -> schedule.getId()).toList();
@@ -99,6 +100,7 @@ public class AppointmentService {
 
     @Transactional
     public AppointmentResponse scheduleAppointment(AppointmentCreationRequest req) {
+        logRequest("Starting scheduleAppointment for client id: " + req.getClientId());
         Appointment appt = mapper.appointmentFromCreationRequest(req);
 
         validateScheduleTimeConsistency(appt);
@@ -110,6 +112,7 @@ public class AppointmentService {
     }
 
     private void validateScheduleTimeConsistency(Appointment appt) {
+        log.debug("Validating schedule time consistency");
         LocalDateTime reqStart = appt.getScheduleAt();
         LocalDateTime reqEnd = appt.getEndScheduleAt();
 
@@ -119,6 +122,7 @@ public class AppointmentService {
     }
 
     private void validateProfessionalAvailabilityAtSchedule(Appointment appt) {
+        log.debug("Validating professional time consistency");
         List<Appointment> existingAppointments =
                 repo.findProfessionalDaySchedule(appt.getProfessionalId(), appt.getScheduleAt());
 
@@ -129,6 +133,7 @@ public class AppointmentService {
     }
 
     private void validateClientAvailabilityAtSchedule(Appointment appt) {
+        log.debug("validating client availability at schedule");
         List<Appointment> existingAppointments = repo.findClientDaySchedule(appt.getClientId(), appt.getScheduleAt());
 
         if (hasAnyOverlap(appt, existingAppointments)) {
@@ -138,6 +143,7 @@ public class AppointmentService {
     }
 
     private void validatePetAvailabilityAtSchedule(Appointment appt) {
+        log.debug("validating pet availability at schedule");
         List<Appointment> existingAppointments = repo.findPetDaySchedule(appt.getPetId(), appt.getScheduleAt());
 
         if (hasAnyOverlap(appt, existingAppointments)) {
@@ -147,6 +153,7 @@ public class AppointmentService {
     }
 
     private boolean hasAnyOverlap(Appointment requestedAppt, List<Appointment> scheduledAppts) {
+        log.debug("Checking for schedule overlaps");
         // TODO: Check behaviour if 2 parallel executions run at the same time
         LocalDateTime requestedStart = requestedAppt.getScheduleAt();
         LocalDateTime requestedEnd = requestedAppt.getEndScheduleAt();

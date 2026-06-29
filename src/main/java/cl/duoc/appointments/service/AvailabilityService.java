@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,7 +33,14 @@ public class AvailabilityService {
     private final DtoModelMapper mapper;
     private final AppointmentRepository repo;
 
+    private void logRequest(String msg) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.info(msg + " by user " + auth.getName());
+    }
+
     public List<SearchAvailabilityResponse> getAvailableScheduleHoursUseCase(SearchAvailabilityRequest req) {
+        logRequest("Starting getAvailableScheduleHoursUseCase");
+
         int slot = req.getSlotDurationMinutes();
         LocalTime from = roundToSlot(req.getStartTime(), slot);
         LocalTime until = roundToSlot(req.getEndTime(), slot);
@@ -50,10 +59,17 @@ public class AvailabilityService {
     private LocalTime roundToSlot(LocalTime time, int slotDurationMinutes) {
         int minutes = time.getMinute();
         int remainder = minutes % slotDurationMinutes;
+        LocalTime result;
         if (remainder == 0) {
-            return time.withSecond(0).withNano(0);
+            result = time.withSecond(0).withNano(0);
+        } else {
+            result = time.plusMinutes(slotDurationMinutes - remainder)
+                    .withSecond(0)
+                    .withNano(0);
         }
-        return time.plusMinutes(slotDurationMinutes - remainder).withSecond(0).withNano(0);
+
+        log.debug("roundToSlot({}, {}) -> {}", time, slotDurationMinutes, result);
+        return result;
     }
 
     private ClinicSchedule buildAvailabilitySchedule(
@@ -67,9 +83,13 @@ public class AvailabilityService {
             LocalTime until = professionalSchedule.getUntilTime().isBefore(endTime)
                     ? professionalSchedule.getUntilTime()
                     : endTime;
+
             if (from.isAfter(until)) {
+                log.debug("Professional {}: skip (from {} > until {})", professionalSchedule.getId(), from, until);
                 continue;
             }
+            log.debug("Professional {}: range {} - {}", professionalSchedule.getId(), from, until);
+
             schedule.set(professionalSchedule.getId(), generateTimeSlotsRange(from, until, slotDuration));
         }
         return schedule;
@@ -82,12 +102,18 @@ public class AvailabilityService {
                 from = until, until = until.plusMinutes(slotMinutes)) {
             slots.add(new TimeSlot(from, until));
         }
+        log.debug("Generated {} slots from {} to {} (each {} min)", slots.size(), startTime, endTime, slotMinutes);
         return slots;
     }
 
     private ClinicSchedule buildAvailabilityList(List<Appointment> currentAppts, ClinicSchedule schedule) {
         for (Appointment appt : currentAppts) {
             ProfessionalId busyVet = new ProfessionalId(appt.getProfessionalId());
+            log.debug(
+                    "Removing slot {} - {} for professional {}",
+                    appt.getScheduleAt().toLocalTime(),
+                    appt.getEndScheduleAt().toLocalTime(),
+                    appt.getProfessionalId());
             schedule.removeTimeSlotRange(
                     busyVet,
                     appt.getScheduleAt().toLocalTime(),
